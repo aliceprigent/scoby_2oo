@@ -1,7 +1,8 @@
 import ReactMapboxGl from "react-mapbox-gl";
+require("dotenv").config();
 
 const Map = ReactMapboxGl({
-    accessToken: "pk.eyJ1IjoiYXVkZXJpY2hvbiIsImEiOiJjazlrNm1jNDIwNHE2M25sNHU4cWU1eWE2In0.TMNE58M43hWc5WV6K89wiQ"
-  });
+  accessToken: process.env.REACT_APP_MAPBOX_TOKEN,
+});
 
-  export default Map
+export default Map;

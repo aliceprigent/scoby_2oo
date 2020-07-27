@@ -3,67 +3,88 @@ import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 
 class ItemForm extends Component {
-  state = {
-    name:""
-  };
+  state = {};
 
   handleChange = (event) => {
     const key = event.target.name;
-    let value =
-      event.target.type === "file" ? event.target.files[0] : event.target.value;
-      console.log("Wax On Wax Off");
-    this.setState({[key]: value });
-  }
+
+    // You can test more if you have to handle different sorts of inputs.
+    const value =
+      event.target.type === "file"
+        ? event.target.files[0]
+        : // : event.target.type === "select"
+          // ? event.target.checked.value
+          event.target.value;
+
+    this.setState({ [key]: value });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Wax On Wax Off");
+    console.log("Wax On Wax Off", this.state);
+
     function buildFormData(formData, data, parentKey) {
-      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
-        Object.keys(data).forEach(key => {
-          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+      if (
+        data &&
+        typeof data === "object" &&
+        !(data instanceof Date) &&
+        !(data instanceof File)
+      ) {
+        Object.keys(data).forEach((key) => {
+          buildFormData(
+            formData,
+            data[key],
+            parentKey ? `${parentKey}[${key}]` : key
+          );
         });
       } else {
-        const value = data == null ? '' : data;
-    
+        const value = data == null ? "" : data;
+
         formData.append(parentKey, value);
       }
     }
-    
+
     function jsonToFormData(data) {
       const formData = new FormData();
-    
+
       buildFormData(formData, data);
-    
+
       return formData;
     }
-    
+
     const my_data = {
       name: this.state.name,
-    description: this.state.description,
-    image: this.state.image,
-    category: this.state.category,
-    quantity: this.state.quantity,
-    address: this.state.adress,
-    /* id_user: this.req.session.currentUser.id */
-  };
-    
-    jsonToFormData(my_data)
+      description: this.state.description,
+      image: this.state.image,
+      category: this.state.category,
+      quantity: this.state.quantity,
+      address: this.state.address,
+      /* id_user: this.req.session.currentUser.id */
+    };
 
+    jsonToFormData(my_data);
   };
-
 
   handlePlace = (place) => {
     // This handle is passed as a callback to the autocomplete component.
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
+    this.setState({
+      type: place.geometry.type,
+      coordinates: place.geometry.coordinates,
+      formattedAddress: place.place_name,
+    });
     console.log(place);
   };
 
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form" onChange={this.handleChange} onSubmit={this.handleSubmit}>
+        <form
+          className="form"
+          onChange={this.handleChange}
+          onSubmit={this.handleSubmit}
+        >
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -99,7 +120,12 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input name="quantity" className="input" id="quantity" type="number" />
+            <input
+              name="quantity"
+              className="input"
+              id="quantity"
+              type="number"
+            />
           </div>
 
           <div className="form-group">
@@ -118,6 +144,7 @@ class ItemForm extends Component {
               name="description"
               className="text-area"
               placeholder="Tell us something about this item"
+              name="description"
             ></textarea>
           </div>
 
@@ -135,10 +162,10 @@ class ItemForm extends Component {
               How do you want to be reached?
             </label>
             <div>
-              <input type="radio" />
+              <input type="radio" name="contact" id="contact" value="email" />
               user email
             </div>
-            <input type="radio" />
+            <input type="radio" name="contact" id="contact" value="phone" />
             contact phone number
           </div>
 
@@ -148,7 +175,9 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button type="submit" className="btn-submit">Add Item</button>
+          <button type="submit" className="btn-submit">
+            Add Item
+          </button>
         </form>
       </div>
     );
