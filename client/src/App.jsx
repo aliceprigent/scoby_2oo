@@ -8,10 +8,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import FormItem from "./components/Forms/FormItem";
 
+
+
 function App() {
   return (
     <div className="App">
       <NavMain />
+     
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/signin" component={Signin} />
