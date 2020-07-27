@@ -3,24 +3,55 @@ import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 
 class ItemForm extends Component {
-  state = {};
+  state = {
+    name:""
+  };
 
-  handleChange(event) {
-    console.log("Wax On Wax Off");
-    this.setState({});
+  handleChange = (event) => {
+    const key = event.target.name;
+    let value =
+      event.target.type === "file" ? event.target.files[0] : event.target.value;
+      console.log("Wax On Wax Off");
+    this.setState({[key]: value });
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     console.log("Wax On Wax Off");
-
-    // In order to send back the data to the client, since there is an input type file you have to send the
-    // data as formdata.
-    // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
-    // Check out the stackoverflow solution below : )
-
-    // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
+    function buildFormData(formData, data, parentKey) {
+      if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+        Object.keys(data).forEach(key => {
+          buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+        });
+      } else {
+        const value = data == null ? '' : data;
+    
+        formData.append(parentKey, value);
+      }
+    }
+    
+    function jsonToFormData(data) {
+      const formData = new FormData();
+    
+      buildFormData(formData, data);
+    
+      return formData;
+    }
+    
+    const my_data = {
+      name: this.state.name,
+    description: this.state.description,
+    image: this.state.image,
+    category: this.state.category,
+    quantity: this.state.quantity,
+    address: this.state.adress,
+    /* id_user: this.req.session.currentUser.id */
   };
+    
+    jsonToFormData(my_data)
+
+  };
+
 
   handlePlace = (place) => {
     // This handle is passed as a callback to the autocomplete component.
@@ -32,7 +63,7 @@ class ItemForm extends Component {
   render() {
     return (
       <div className="ItemForm-container">
-        <form className="form" onChange={this.handleChange}>
+        <form className="form" onChange={this.handleChange} onSubmit={this.handleSubmit}>
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -41,6 +72,7 @@ class ItemForm extends Component {
             </label>
             <input
               id="name"
+              name="name"
               className="input"
               type="text"
               placeholder="What are you giving away ?"
@@ -52,7 +84,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1">
+            <select id="category" name="category" defaultValue="-1">
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -67,7 +99,7 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" id="quantity" type="number" />
+            <input name="quantity" className="input" id="quantity" type="number" />
           </div>
 
           <div className="form-group">
@@ -83,6 +115,7 @@ class ItemForm extends Component {
             </label>
             <textarea
               id="description"
+              name="description"
               className="text-area"
               placeholder="Tell us something about this item"
             ></textarea>
@@ -92,7 +125,7 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" />
+            <input name="image" className="input" id="image" type="file" />
           </div>
 
           <h2>Contact information</h2>
@@ -115,7 +148,7 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit">Add Item</button>
+          <button type="submit" className="btn-submit">Add Item</button>
         </form>
       </div>
     );

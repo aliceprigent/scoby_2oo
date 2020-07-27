@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../styles/LocationAutoComplete.css";
 import axios from "axios";
+require("dotenv").config()
 
 class LocationAutoComplete extends Component {
   constructor(props) {
