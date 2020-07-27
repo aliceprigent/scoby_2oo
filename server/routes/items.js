@@ -26,6 +26,7 @@ router.get("/:id", (req, res) => {
 
 router.post("/", (req, res) => {
   const newItem = { ...req.body, id_user: req.session.currentUser.id };
+  console.log(newItem);
   itemModel
     .create(newItem)
     .then((item) => {
