@@ -31,35 +31,42 @@ router.post("/signin", (req, res, next) => {
 
 router.post("/signup", (req, res, next) => {
   const { email, password, firstName, lastName } = req.body;
+  console.log(req.body);
+  User.findOne({ email })
+    .then((userDocument) => {
+      if (userDocument) {
+        return res.status(400).json({ message: "Email already taken" });
+      }
 
-  User.findOne({ email }).then((userDocument) => {
-    if (userDocument) {
-      return res.status(400).json({ message: "Email already taken" });
-    }
+      try {
+        // hashSync can fail, we have to wrap the hashing in a try/catch block.
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        const newUser = {
+          email,
+          lastName,
+          firstName,
+          password: hashedPassword,
+        };
 
-    try {
-      // hashSync can fail, we have to wrap the hashing in a try/catch block.
-      const hashedPassword = bcrypt.hashSync(password, salt);
-      const newUser = { email, lastName, firstName, password: hashedPassword };
-
-      User.create(newUser).then((newUserDocument) => {
-        const userObj = newUserDocument.toObject();
-        delete userObj.password;
-        req.session.currentUser = userObj;
-        res.status(201).json(userObj);
-      });
-    } catch (error) {
+        User.create(newUser).then((newUserDocument) => {
+          const userObj = newUserDocument.toObject();
+          delete userObj.password;
+          req.session.currentUser = userObj;
+          res.status(201).json(userObj);
+        });
+      } catch (error) {
+        res.status(500).json(error);
+      }
+    })
+    .catch((error) => {
       res.status(500).json(error);
-    }
-  }).catch(error => {
-    res.status(500).json(error)
-  })
+    });
 });
 
 router.get("/isLoggedIn", (req, res, next) => {
   // If currentUser is defined in the session it means the user is logged in.
   if (req.session.currentUser) {
-    res.status(200).json(req.session.currentUser)
+    res.status(200).json(req.session.currentUser);
   } else {
     res.status(401).json({ message: "Unauthorized" });
   }
