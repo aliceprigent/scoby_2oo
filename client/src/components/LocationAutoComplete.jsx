@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "../styles/LocationAutoComplete.css";
 import axios from "axios";
-require("dotenv").config()
+require("dotenv").config();
 
 class LocationAutoComplete extends Component {
   constructor(props) {
@@ -69,6 +69,7 @@ class LocationAutoComplete extends Component {
     return (
       <div className="LocationAutoComplete">
         <input
+          name="address"
           className="input"
           type="text"
           value={this.state.search}
