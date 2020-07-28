@@ -44,16 +44,38 @@ export default {
       .catch(errorHandler);
   },
 
-  getItems() {
+  updateProfile(id, data) {
     return service
-      .get("/api/items")
+      .patch(`/api/users/${id}`, data)
       .then((res) => res.data)
       .catch(errorHandler);
+  },
+
+  getItems(query) {
+    console.log(query);
+    if (!query) {
+      return service
+        .get("/api/items")
+        .then((res) => res.data)
+        .catch(errorHandler);
+    } else {
+      return service
+        .get(`/api/items/${query}`)
+        .then((res) => res.data)
+        .catch(errorHandler);
+    }
   },
 
   createItem(itemInfo) {
     return service
       .post("/api/items", itemInfo)
+      .then((res) => res.data)
+      .catch(errorHandler);
+  },
+
+  deleteItem(id) {
+    return service
+      .delete(`/api/items/${id}`)
       .then((res) => res.data)
       .catch(errorHandler);
   },
