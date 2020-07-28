@@ -28,7 +28,7 @@ async function seedIt() {
         "https://cdn1.iconfinder.com/data/icons/gardening-filled-line/614/1935_-_Growing_Plant-512.png",
       category: "Plant",
       quantity: 1,
-      address: "54 rue de Lille, Paris",
+      address: "3 rue des Lilas, 75019 Paris",
       location: {
         type: "Point",
       },
