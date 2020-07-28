@@ -11,7 +11,7 @@ class ItemForm extends Component {
 
     // You can test more if you have to handle different sorts of inputs.
     const value =
-      event.target.type === "file"
+      event.target.type === "file" 
         ? event.target.files[0]
         : // : event.target.type === "select"
           // ? event.target.checked.value
@@ -24,7 +24,7 @@ class ItemForm extends Component {
     event.preventDefault();
     console.log("Wax On Wax Off", this.state);
 
- /*    function buildFormData(formData, data, parentKey) {
+    function buildFormData(formData, data, parentKey) {
       if (
         data &&
         typeof data === "object" &&
@@ -45,27 +45,12 @@ class ItemForm extends Component {
       }
     }
 
-    function jsonToFormData(data) {
-      const formData = new FormData();
+   
+    let formData = new FormData();
+    buildFormData(formData, this.state);
 
-      buildFormData(formData, data);
-
-      return formData;
-    }
-
-    const my_data = {
-      name: this.state.name,
-      description: this.state.description,
-      image: this.state.image,
-      category: this.state.category,
-      quantity: this.state.quantity,
-      address: this.state.address, */
-      /* id_user: this.req.session.currentUser.id */
-    /* };
-
-    jsonToFormData(my_data); */
     apiHandler
-      .createItem(this.state)
+      .createItem(formData)
       .then((data) => {
         console.log(data);
       })
