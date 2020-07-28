@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
+import apiHandler from "../../api/apiHandler";
 import "../../styles/form.css";
 
 class ItemForm extends Component {
@@ -23,46 +24,55 @@ class ItemForm extends Component {
     event.preventDefault();
     console.log("Wax On Wax Off", this.state);
 
-    function buildFormData(formData, data, parentKey) {
-      if (
-        data &&
-        typeof data === "object" &&
-        !(data instanceof Date) &&
-        !(data instanceof File)
-      ) {
-        Object.keys(data).forEach((key) => {
-          buildFormData(
-            formData,
-            data[key],
-            parentKey ? `${parentKey}[${key}]` : key
-          );
-        });
-      } else {
-        const value = data == null ? "" : data;
+    //   function buildFormData(formData, data, parentKey) {
+    //     if (
+    //       data &&
+    //       typeof data === "object" &&
+    //       !(data instanceof Date) &&
+    //       !(data instanceof File)
+    //     ) {
+    //       Object.keys(data).forEach((key) => {
+    //         buildFormData(
+    //           formData,
+    //           data[key],
+    //           parentKey ? `${parentKey}[${key}]` : key
+    //         );
+    //       });
+    //     } else {
+    //       const value = data == null ? "" : data;
 
-        formData.append(parentKey, value);
-      }
-    }
+    //       formData.append(parentKey, value);
+    //     }
+    //   }
 
-    function jsonToFormData(data) {
-      const formData = new FormData();
+    //   function jsonToFormData(data) {
+    //     const formData = new FormData();
 
-      buildFormData(formData, data);
+    //     buildFormData(formData, data);
 
-      return formData;
-    }
+    //     return formData;
+    //   }
 
-    const my_data = {
-      name: this.state.name,
-      description: this.state.description,
-      image: this.state.image,
-      category: this.state.category,
-      quantity: this.state.quantity,
-      address: this.state.address,
-      /* id_user: this.req.session.currentUser.id */
-    };
+    //   const my_data = {
+    //     name: this.state.name,
+    //     description: this.state.description,
+    //     image: this.state.image,
+    //     category: this.state.category,
+    //     quantity: this.state.quantity,
+    //     address: this.state.address,
+    //     /* id_user: this.req.session.currentUser.id */
+    //   };
 
-    jsonToFormData(my_data);
+    //   jsonToFormData(my_data);
+
+    apiHandler
+      .createItem(this.state)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   handlePlace = (place) => {
@@ -70,9 +80,11 @@ class ItemForm extends Component {
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
     this.setState({
-      type: place.geometry.type,
-      coordinates: place.geometry.coordinates,
-      formattedAddress: place.place_name,
+      location: {
+        type: place.geometry.type,
+        coordinates: place.geometry.coordinates,
+        formattedAddress: place.place_name,
+      },
     });
     console.log(place);
   };
