@@ -26,7 +26,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", fileUpload.single("image"), (req, res) => {
-  const newItem = { ...req.body, id_user: req.session.currentUser.id };
+  const newItem = { ...req.body, id_user: req.session.currentUser._id };
   console.log(newItem);
   itemModel
     .create(newItem)
