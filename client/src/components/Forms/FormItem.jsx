@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
+import apiHandler from "../../api/apiHandler";
 import "../../styles/form.css";
 
 class ItemForm extends Component {
@@ -70,9 +71,11 @@ class ItemForm extends Component {
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
     this.setState({
-      type: place.geometry.type,
-      coordinates: place.geometry.coordinates,
-      formattedAddress: place.place_name,
+      location: {
+        type: place.geometry.type,
+        coordinates: place.geometry.coordinates,
+        formattedAddress: place.place_name,
+      },
     });
     console.log(place);
   };
