@@ -64,6 +64,14 @@ class ItemForm extends Component {
     /* };
 
     jsonToFormData(my_data); */
+    apiHandler
+      .createItem(this.state)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   handlePlace = (place) => {
