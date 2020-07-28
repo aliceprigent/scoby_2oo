@@ -1,6 +1,7 @@
 const express = require("express");
 const router = new express.Router();
 const itemModel = require("../models/Item");
+const fileUpload = require('../config/cloudinary');
 
 router.get("/", (req, res) => {
   itemModel
@@ -24,7 +25,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", fileUpload.single('image'), (req, res) => {
   const newItem = { ...req.body, id_user: req.session.currentUser.id };
   console.log(newItem);
   itemModel

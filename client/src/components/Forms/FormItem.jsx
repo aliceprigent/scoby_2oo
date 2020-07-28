@@ -23,7 +23,7 @@ class ItemForm extends Component {
     event.preventDefault();
     console.log("Wax On Wax Off", this.state);
 
-    function buildFormData(formData, data, parentKey) {
+ /*    function buildFormData(formData, data, parentKey) {
       if (
         data &&
         typeof data === "object" &&
@@ -58,11 +58,11 @@ class ItemForm extends Component {
       image: this.state.image,
       category: this.state.category,
       quantity: this.state.quantity,
-      address: this.state.address,
+      address: this.state.address, */
       /* id_user: this.req.session.currentUser.id */
-    };
+    /* };
 
-    jsonToFormData(my_data);
+    jsonToFormData(my_data); */
   };
 
   handlePlace = (place) => {
