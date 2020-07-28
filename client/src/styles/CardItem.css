@@ -2,7 +2,20 @@
   margin-top: 50px;
 }
 
-.CardItem .item {
+.card {
+  width: 300px;
+  height: 300px;
+  background-color: white;
+  position: absolute;
+  top: 100px; 
+  left: 30px; 
+  border-radius:10px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.item {
   display: flex;
   padding: 20px 40px;
   flex-direction: row-reverse;
@@ -10,13 +23,23 @@
   justify-content: space-between;
   background: white;
   max-width: 800px;
+  width: 300px;
+  height: 300px;
   margin-bottom: 20px;
   border-radius: 10px;
 }
 
-.CardItem .round-image {
-  height: 200px;
-  width: 200px;
+.CardItem  .round-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.round-image {
+  height: 100px;
+  width: 100px;
   border-radius: 100%;
   overflow: hidden;
   position: relative;

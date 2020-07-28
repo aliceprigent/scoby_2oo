@@ -2,10 +2,13 @@ const express = require("express");
 const router = new express.Router();
 const itemModel = require("../models/Item");
 const fileUpload = require('../config/cloudinary');
+const userModel = require("../models/User");
+
 
 router.get("/", (req, res) => {
   itemModel
     .find()
+    .populate('User')
     .then((items) => {
       res.status(200).json(items);
     })
@@ -28,7 +31,7 @@ router.get("/:id", (req, res) => {
 router.post("/", fileUpload.single('image'), (req, res) => {
   const newItem = { ...req.body, id_user: req.session.currentUser._id };
   if (req.file) {
-    newItem.image = req.file.secure_url;
+    newItem.image = req.file.path;
   }
   console.log(newItem);
   itemModel
