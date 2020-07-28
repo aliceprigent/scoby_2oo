@@ -17,6 +17,18 @@ router.get("/", (req, res) => {
     });
 });
 
+router.get("/:user", (req, res) => {
+  itemModel
+    .find({ id_user: req.params.user })
+    .then((items) => {
+      console.log(items);
+      res.status(200).json(items);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
 router.get("/:id", (req, res) => {
   itemModel
     .findById(req.params.id)
